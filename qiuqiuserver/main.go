@@ -1,23 +1,13 @@
 package main
 
 import (
-	"qiuqiu/common/connect"
-	"time"
+	"qiuqiu/common/sunnet"
 )
 
-var Mgr *connect.Manager
+var Sun *sunnet.Sunnet
 
 func main() {
-	Mgr = connect.NewManager()
-	ser := func() {
-		s := connect.NewService()
-		s.OnInit()
-		Mgr.StoreService(s)
-	}
-	for i := 0; i < 3; i++ {
-		go func() {
-			ser()
-		}()
-	}
-	time.Sleep(100 * time.Second)
+	Sun = sunnet.NewSunnet()
+
+	Sun.Run()
 }

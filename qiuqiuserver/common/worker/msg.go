@@ -1,4 +1,4 @@
-package connect
+package worker
 
 type Msg struct {
 	head  *Head
