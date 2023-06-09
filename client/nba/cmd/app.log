@@ -1,0 +1,25 @@
+2022-12-30 16:56:53.616	[INFO]	metric/manager.go:78	metric start	{"worker": 16}
+2022-12-30 16:56:54.334	[INFO]	gobot/app.go:126	appRun
+2022-12-30 16:57:02.226	[INFO]	cmd/main.go:96	OnExit	{"reason": "uiclose"}
+2022-12-30 16:57:02.226	[DEBUG]	metric/manager.go:47	notify worker exit
+2022-12-30 16:57:02.226	[INFO]	metric/manager.go:49	metric exit	{"pending": 0}
+2023-01-06 15:20:35.858	[INFO]	gobot/app.go:126	appRun
+2023-01-06 15:20:39.560	[INFO]	gobot/app.go:212	gamer start	{"uid": ".cc2"}
+2023-01-06 15:20:39.561	[DEBUG]	gamer/login.go:35	begin Auth	{"uid": ".cc2"}
+2023-01-06 15:20:39.641	[DEBUG]	gamer/login.go:77	Connect
+2023-01-06 15:20:39.680	[DEBUG]	gamer/network.go:18	OnConnected
+2023-01-06 15:20:39.680	[INFO]	gobot/app.go:207	gamer exit	{"uid": ".cc2", "reason": ""}
+2023-01-06 15:20:39.680	[INFO]	network/client.go:101	gnet start	{"gamer": "cc2"}
+2023-01-06 15:20:39.681	[DEBUG]	back/gamer.go:125	ChangeStatus	{"n": "", "s": "error", "i": "gid(0) level(0) zone(QA1服) | 离线"}
+2023-01-06 15:21:16.892	[INFO]	gobot/app.go:126	appRun
+2023-01-06 15:21:18.162	[INFO]	gobot/app.go:212	gamer start	{"uid": ".cc2"}
+2023-01-06 15:21:18.162	[DEBUG]	gamer/login.go:35	begin Auth	{"uid": ".cc2"}
+2023-01-06 15:21:18.241	[DEBUG]	gamer/login.go:77	Connect
+2023-01-06 15:21:18.280	[DEBUG]	gamer/network.go:18	OnConnected
+2023-01-06 15:21:18.280	[INFO]	network/client.go:101	gnet start	{"gamer": "cc2"}
+2023-01-06 15:21:18.282	[DEBUG]	gamer/login.go:103	sendlogin	{"sent": true}
+2023-01-06 15:21:18.319	[DEBUG]	gamer/gamer.go:80	nilPkt	{"cmd": 0}
+2023-01-06 15:21:18.384	[DEBUG]	back/gamer.go:125	ChangeStatus	{"n": "禯壍兯熋", "s": "success", "i": "gid(0) level(1) zone(QA1服) | 离线"}
+2023-01-06 15:21:18.388	[INFO]	gamer/login.go:117	loginOk
+2023-01-06 15:21:18.389	[DEBUG]	back/gamer.go:125	ChangeStatus	{"n": "禯壍兯熋", "s": "success", "i": "gid(203) level(1) zone(QA1服) | 在线"}
+2023-01-06 15:21:21.349	[INFO]	cmd/main.go:95	OnExit	{"reason": "uiclose"}
