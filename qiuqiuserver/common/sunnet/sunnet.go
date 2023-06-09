@@ -44,7 +44,6 @@ func (s *Sunnet) Run() {
 			s.SendMsg2Worker(msg)
 		}
 	}
-
 }
 
 func (s *Sunnet) SendMsg2Worker(msg worker.Msg) {

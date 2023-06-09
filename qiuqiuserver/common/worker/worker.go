@@ -5,6 +5,10 @@ import (
 	"time"
 )
 
+var (
+	WORKER = 10000
+)
+
 type Worker interface {
 	GetId() int64
 	GetType() string
@@ -64,7 +68,7 @@ func (s *WorkerBase) IsFree() bool {
 func NewWorker() Worker {
 	return &WorkerBase{
 		id:      time.Now().Unix(),
-		msg:     make(chan Msg, 1000),
+		msg:     make(chan Msg, WORKER),
 		destory: make(chan bool, 1),
 	}
 }

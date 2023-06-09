@@ -4,6 +4,10 @@ import (
 	"sync"
 )
 
+var (
+	WORK_NUM = 10
+)
+
 type Manager struct {
 	services sync.Map // 服务id:worker
 }
@@ -34,9 +38,15 @@ func (m *Manager) GetWorker(id uint32) Worker {
 }
 
 func NewManager() *Manager {
-	return &Manager{
+	mgr := &Manager{
 		services: sync.Map{},
 	}
+	for i := 0; i < WORK_NUM; i++ {
+		w := NewWorker()
+		w.OnInit()
+		mgr.StoreWorker(w)
+	}
+	return mgr
 }
 
 func (m *Manager) FreeWorker() Worker {
