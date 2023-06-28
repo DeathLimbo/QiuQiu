@@ -1,6 +1,7 @@
 package sunnet
 
 import (
+	"qiuqiu/common/module"
 	"qiuqiu/common/service"
 	"qiuqiu/common/worker"
 	"sync"
@@ -18,7 +19,7 @@ type Sunnet struct {
 	services sync.Map // serverid : service
 	maxId    uint32
 
-	//socket县城
+	//socket
 	SocketWorker *worker.WorkerSocket
 	socketThread worker.Thread
 }
@@ -32,8 +33,11 @@ func (s *Sunnet) StartWorker() {
 	}
 }
 
-func (s *Sunnet) Start() {
+func (s *Sunnet) Start(mods ...module.Module) {
 	s.StartWorker()
+	for i := 0; i < len(mods); i++ {
+		module.RunModule(mods[i])
+	}
 }
 
 func (s *Sunnet) Wait() {
@@ -80,5 +84,7 @@ func (s *Sunnet) LoadServer(serverId uint32) service.Service {
 func (s *Sunnet) StartSocket() {
 	socket := worker.NewWorkerSocket()
 	socket.OnInit()
-	thread := worker.NewThread(i, w)
+	thread := worker.NewThread(1, socket)
+	s.SocketWorker = socket
+	s.socketThread = thread
 }

@@ -3,9 +3,9 @@ package msg
 type MsgTyp int
 
 const (
-	SG_TYP_BASE   MsgTyp = 1
-	SG_TYP_ACCEPT MsgTyp = 1 //新客户端链接
-	SG_TYP_RW     MsgTyp = 1 // 客户端链接可读可写
+	MSG_TYP_BASE   MsgTyp = 1
+	MSG_TYP_ACCEPT MsgTyp = 2 //新客户端链接
+	MSG_TYP_RW     MsgTyp = 3 // 客户端链接可读可写
 )
 
 type Msg interface {
@@ -15,13 +15,18 @@ type Msg interface {
 type BaseMsg struct {
 	Msg
 	MsgTyp MsgTyp
+	Byte   []byte
+}
+
+func (m *BaseMsg) GetBody() []byte {
+	return m.Byte
 }
 
 type ServiceMSG struct {
 	BaseMsg
 	Source uint32
-	Byte   []byte
-	Lne    uint32
+
+	Lne uint32
 }
 
 type SocketAcceptMsg struct {
