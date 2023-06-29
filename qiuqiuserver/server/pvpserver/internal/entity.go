@@ -26,11 +26,10 @@ type Entity interface {
 }
 
 type BaseEntity struct {
-	id        uint32
-	name      string
-	pos       Pos
-	clientPos Pos
-	typ       EntityTyp
+	id   uint32
+	name string
+	pos  Pos
+	typ  EntityTyp
 }
 
 func (p *BaseEntity) GetName() string {

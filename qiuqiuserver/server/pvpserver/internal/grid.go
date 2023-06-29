@@ -1,7 +1,6 @@
 package internal
 
 import (
-	"fmt"
 	"sync"
 )
 
@@ -11,13 +10,20 @@ type Grid struct {
 }
 
 type GridManger struct {
-	grids map[Pos]*Grid
+	grids         map[Pos]*Grid
+	width, height int32
+	rate          int32
 }
 
-func NewGridManager(x, y int32) *GridManger {
+func NewGridManager(width, height, rate int32) *GridManger {
 	ret := &GridManger{
-		grids: make(map[Pos]*Grid),
+		grids:  make(map[Pos]*Grid),
+		width:  width,
+		height: height,
+		rate:   rate,
 	}
+	x := RateGrid(width, rate)
+	y := RateGrid(height, rate)
 	//生成 格子
 	for i := int32(0); i < x; i++ {
 		for j := int32(0); j < y; j++ {
@@ -30,6 +36,7 @@ func NewGridManager(x, y int32) *GridManger {
 			ret.grids[grid.pos] = grid
 		}
 	}
+
 	return ret
 }
 
@@ -54,7 +61,8 @@ func (g *GridManger) findEntity(pos Pos, id uint32) Entity {
 }
 
 func (g *GridManger) deleteEntity(e Entity) {
-	grid, ok := g.grids[e.GetPos()]
+	gpos := g.GetGridPos(e.GetPos())
+	grid, ok := g.grids[gpos]
 	if !ok {
 		return
 	}
@@ -73,7 +81,8 @@ func (g *Grid) broad(e Entity) {
 }
 
 func (g *GridManger) addEntity(e Entity) {
-	grid, ok := g.grids[e.GetPos()]
+	gpos := g.GetGridPos(e.GetPos())
+	grid, ok := g.grids[gpos]
 	if !ok {
 		return
 	}
@@ -82,8 +91,9 @@ func (g *GridManger) addEntity(e Entity) {
 
 // 广播给周围格子
 func (g *GridManger) broadRandGrid(e Entity) {
-	for i := e.GetPos().x - 1; i < e.GetPos().x+1; i++ {
-		for j := e.GetPos().y - 1; j < e.GetPos().y+1; j++ {
+	pos := g.GetGridPos(e.GetPos())
+	for i := pos.x - 1; i < pos.x+1; i++ {
+		for j := pos.y - 1; j < pos.y+1; j++ {
 			pos := Pos{
 				x: i,
 				y: j,
@@ -98,20 +108,40 @@ func (g *GridManger) broadRandGrid(e Entity) {
 }
 
 func (g *GridManger) Moveto(to Pos, e Entity) {
-	ole := g.findEntity(e.GetPos(), e.GetId())
+	gPos := g.GetGridPos(e.GetPos())
+	gTo := g.GetGridPos(to)
+
+	ole := g.findEntity(gPos, e.GetId())
+	defer func() {
+		//通知周围的格子
+		g.broadRandGrid(e)
+	}()
 	if ole != nil { //代表以前就有数据
-		if ole.GetPos().x == e.GetPos().x && ole.GetPos().y == e.GetPos().y { //代表格子没换
-			fmt.Println("在这里？？", e.GetId(), ole.GetId(), ole.GetPos().x, e.GetPos().x, ole.GetPos().y, e.GetPos().y)
+		if gTo.x == gPos.x && gTo.y == gPos.y { //代表格子没换
+			//fmt.Println("在这里？？", e.GetId(), gTo.x, gPos.x, gTo.y, gPos.y)
 			return
 		}
 		//删除当前格子的 entity
 		g.deleteEntity(e)
 	}
+
 	e.SetPos(to)
 
 	//添加到新格子
 	g.addEntity(e)
 
-	//通知周围的格子
-	g.broadRandGrid(e)
+}
+
+func RateGrid(length int32, rate int32) int32 {
+	x := length / rate
+	return x
+}
+
+func (g *GridManger) GetGridPos(client Pos) Pos {
+	x := RateGrid(client.x, g.rate)
+	y := RateGrid(client.y, g.rate)
+	return Pos{
+		x: x,
+		y: y,
+	}
 }
