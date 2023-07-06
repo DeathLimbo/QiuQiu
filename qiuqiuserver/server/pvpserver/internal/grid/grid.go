@@ -1,4 +1,4 @@
-package internal
+package grid
 
 import (
 	"sync"
@@ -60,7 +60,7 @@ func (g *GridManger) findEntity(pos Pos, id uint32) Entity {
 	return ret
 }
 
-func (g *GridManger) deleteEntity(e Entity) {
+func (g *GridManger) deleteEntity(e Entity) { //通知周围格子
 	gpos := g.GetGridPos(e.GetPos())
 	grid, ok := g.grids[gpos]
 	if !ok {
@@ -118,7 +118,6 @@ func (g *GridManger) Moveto(to Pos, e Entity) {
 	}()
 	if ole != nil { //代表以前就有数据
 		if gTo.x == gPos.x && gTo.y == gPos.y { //代表格子没换
-			//fmt.Println("在这里？？", e.GetId(), gTo.x, gPos.x, gTo.y, gPos.y)
 			return
 		}
 		//删除当前格子的 entity
